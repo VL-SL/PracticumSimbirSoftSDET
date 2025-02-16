@@ -3,15 +3,8 @@ package svm.sibmirsoft.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.Select;
 
-public class Page {
-    private final WebDriver driver;
-
-    // TODO Есть еще чекбокс хобби, но в тест-кейсе не указано протестировать их.
-    // TODO А еще на странице присутствует баг. Если выделить дату и удалить, то страница залагает (все пропадет).
-
+public class Page extends BasePage {
     private final By firstName = By.id("firstName");
     private final By lastName = By.id("lastName");
     private final By email = By.cssSelector("#userEmail");
@@ -26,16 +19,11 @@ public class Page {
     private final By selectCity = By.cssSelector("#city");
     private final By submit = By.cssSelector("#submit");
 
-    private By gender(String gender){
-        return By.cssSelector("label[for='gender-radio-" + gender + "']");
-    }
-
-    public void setGender(String gender) {
-        driver.findElement(gender(gender)).click();
-    }
+    // TODO Есть еще чекбокс хобби, но в тест-кейсе не указано протестировать их.
+    // TODO А еще на странице присутствует баг. Если выделить дату и удалить, то страница залагает (все пропадет).
 
     public Page(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
 
     public void open() {
@@ -43,61 +31,61 @@ public class Page {
     }
 
     public void setFirstName(String firstName) {
-        driver.findElement(this.firstName).sendKeys(firstName);
+        inputText(this.firstName, firstName);
     }
 
     public void setLastName(String lastName) {
-        driver.findElement(this.lastName).sendKeys(lastName);
+        inputText(this.lastName, lastName);
     }
 
     public void setEmail(String email) {
-        driver.findElement(this.email).sendKeys(email);
+        inputText(this.email, email);
     }
 
     public void setMobile(String mobile) {
-        driver.findElement(this.mobile).sendKeys(mobile);
+        inputText(this.mobile, mobile);
     }
 
     public void setDateOfBirth(String year, String month, String day) {
-        driver.findElement(this.dateOfBirth).click();
-
-        Select monthSelect = new Select(driver.findElement(monthDropdown));
-        monthSelect.selectByVisibleText(month);
-
-        Select yearSelect = new Select(driver.findElement(yearDropdown));
-        yearSelect.selectByVisibleText(year);
-
-        driver.findElement(By.xpath(String.format("//div[contains(@class," +
-                " 'react-datepicker__day') and text()='%s']", day))).click();
+        click(this.dateOfBirth);
+        selectFromDropdown(monthDropdown, month);
+        selectFromDropdown(yearDropdown, year);
+        click(By.xpath(String.format("//div[contains(@class, 'react-datepicker__day') and text()='%s']", day)));
     }
 
     public void setSubject(String subject) {
-        WebElement subjectInput = driver.findElement(this.subject);
-        subjectInput.click();
-
-        subjectInput.sendKeys(subject);
-        subjectInput.sendKeys(Keys.ENTER);
+        click(this.subject);
+        inputText(this.subject, subject);
+        findElement(this.subject).sendKeys(Keys.ENTER);
     }
 
     public void setPicture(String picturePath) {
-        driver.findElement(this.picture).sendKeys(picturePath);
+        inputText(this.picture, picturePath);
     }
 
     public void setCurrentAddress(String currentAddress) {
-        driver.findElement(this.currentAddress).sendKeys(currentAddress);
+        inputText(this.currentAddress, currentAddress);
     }
 
     public void setSelectState(String selectState) {
-        driver.findElement(this.selectState).click();
-        driver.findElement(By.xpath("//div[text()='" + selectState + "']")).click();
+        click(this.selectState);
+        click(By.xpath("//div[text()='" + selectState + "']"));
     }
 
     public void setSelectCity(String selectCity) {
-        driver.findElement(this.selectCity).click();
-        driver.findElement(By.xpath("//div[text()='" + selectCity + "']")).click();
+        click(this.selectCity);
+        click(By.xpath("//div[text()='" + selectCity + "']"));
     }
 
     public void submitForm() {
-        driver.findElement(submit).click();
+        click(submit);
+    }
+
+    private By gender(String gender) {
+        return By.cssSelector("label[for='gender-radio-" + gender + "']");
+    }
+
+    public void setGender(String gender) {
+        click(gender(gender));
     }
 }
