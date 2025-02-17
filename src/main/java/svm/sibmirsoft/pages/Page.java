@@ -3,6 +3,7 @@ package svm.sibmirsoft.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 public class Page extends BasePage {
     private final By firstName = By.id("firstName");
@@ -18,6 +19,8 @@ public class Page extends BasePage {
     private final By selectState = By.cssSelector("#state");
     private final By selectCity = By.cssSelector("#city");
     private final By submit = By.cssSelector("#submit");
+    private final By modalTitle = By.id("example-modal-sizes-title-lg");
+    private final By modalTable = By.cssSelector(".table-responsive");
 
     // TODO Есть еще чекбокс хобби, но в тест-кейсе не указано протестировать их.
     // TODO А еще на странице присутствует баг. Если выделить дату и удалить, то страница залагает (все пропадет).
@@ -87,5 +90,50 @@ public class Page extends BasePage {
 
     public void setGender(String gender) {
         click(gender(gender));
+    }
+
+    public String getFirstName() {
+        return getFieldValue(firstName);
+    }
+
+    public String getLastName() {
+        return getFieldValue(lastName);
+    }
+
+    public String getEmail() {
+        return getFieldValue(email);
+    }
+
+    public String getMobile() {
+        return getFieldValue(mobile);
+    }
+
+    public String getDateOfBirth() {
+        return getFieldValue(dateOfBirth);
+    }
+
+    public String getSubject() {
+        return getFieldValue(subject);
+    }
+
+    public String getCurrentAddress() {
+        return getFieldValue(currentAddress);
+    }
+
+    public String getSelectedState() {
+        return getElementText(selectState);
+    }
+
+    public String getSelectedCity() {
+        return getElementText(selectCity);
+    }
+
+    public String getModalTitle() {
+        return findElement(modalTitle).getText();
+    }
+
+    public String getTableValue(String label) {
+        WebElement table = findElement(modalTable);
+        return table.findElement(By.xpath(".//td[text()='" + label + "']/following-sibling::td")).getText();
     }
 }

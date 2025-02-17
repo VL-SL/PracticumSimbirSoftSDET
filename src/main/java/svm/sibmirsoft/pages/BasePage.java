@@ -28,4 +28,12 @@ public class BasePage {
         Select dropdown = new Select(findElement(dropdownLocator));
         dropdown.selectByVisibleText(value);
     }
+
+    protected String getFieldValue(By locator) {
+        return findElement(locator).getAttribute("value");
+    }
+
+    protected String getElementText(By locator) {
+        return findElement(locator).getText();
+    }
 }
