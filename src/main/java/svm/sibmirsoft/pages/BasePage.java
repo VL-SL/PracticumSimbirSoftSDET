@@ -3,6 +3,7 @@ package svm.sibmirsoft.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
 public class BasePage {
@@ -16,11 +17,19 @@ public class BasePage {
         return driver.findElement(locator);
     }
 
+    protected void scrollToElement(By locator) {
+        WebElement element = findElement(locator);
+        Actions actions = new Actions(driver);
+        actions.moveToElement(element).perform();
+    }
+
     protected void click(By locator) {
+        scrollToElement(locator);
         findElement(locator).click();
     }
 
     protected void inputText(By locator, String text) {
+        scrollToElement(locator);
         findElement(locator).sendKeys(text);
     }
 
